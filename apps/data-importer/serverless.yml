@@ -1,0 +1,45 @@
+org: kassabjana
+service: MyScheduledEvent
+frameworkVersion: "4"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: ${opt:stage, 'default'}
+  region: us-east-1
+
+  environment:
+    TABLE_NAME: http-crud-tutorial-items
+    S3_BUCKET: import-s3-to-ddb-dev-data
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+      Resource:
+        - arn:aws:s3:::${self:provider.environment.S3_BUCKET}/*
+
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      Resource:
+        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TABLE_NAME}
+
+functions:
+  importItems:
+    handler: handler.importItems
+    events:
+      - schedule:
+          method: scheduler
+          rate: cron(0 8 * * ? *) # CloudWatch cron: minute hour day month weekday year
+          timezone: "Asia/Beirut"
+          enabled: true
+          name: import-items-daily
+          description: "Daily import at 8 AM Beirut time"
+
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
+
+package:
+  individually: true

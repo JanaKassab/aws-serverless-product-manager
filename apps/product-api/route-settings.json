@@ -1,0 +1,22 @@
+{
+  "POST /products": {
+    "ThrottlingBurstLimit": 100,
+    "ThrottlingRateLimit": 2000
+  },
+  "GET /products": {
+    "ThrottlingBurstLimit": 100,
+    "ThrottlingRateLimit": 2000
+  },
+  "GET /products/{id}": {
+    "ThrottlingBurstLimit": 100,
+    "ThrottlingRateLimit": 2000
+  },
+  "PATCH /products/{id}": {
+    "ThrottlingBurstLimit": 100,
+    "ThrottlingRateLimit": 2000
+  },
+  "DELETE /products/{id}": {
+    "ThrottlingBurstLimit": 100,
+    "ThrottlingRateLimit": 2000
+  }
+}

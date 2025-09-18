@@ -1,0 +1,34 @@
+createProduct:
+  handler: controllers/productController.createProductHandler
+  events:
+    - httpApi:
+        method: post
+        path: /products
+
+getProduct:
+  handler: controllers/productController.getProductHandler
+  events:
+    - httpApi:
+        method: get
+        path: /products/{id}
+
+listProducts:
+  handler: controllers/productController.listProductsHandler
+  events:
+    - httpApi:
+        method: get
+        path: /products
+
+updateProduct:
+  handler: controllers/productController.updateProductHandler
+  events:
+    - httpApi:
+        method: patch
+        path: /products/{id}
+
+deleteProduct:
+  handler: controllers/productController.deleteProductHandler
+  events:
+    - httpApi:
+        method: delete
+        path: /products/{id}

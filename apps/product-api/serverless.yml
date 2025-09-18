@@ -1,0 +1,32 @@
+org: kassabjana
+app: product-crud-app
+service: my-crud-serverless
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  environment:
+    PRODUCTS_TABLE: http-crud-tutorial-items
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PRODUCTS_TABLE}
+
+functions: ${file(./routes.yml)}
+
+package:
+  individually: true
+
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
